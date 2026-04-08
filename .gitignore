@@ -1,0 +1,5 @@
+node_modules/
+*.zip
+package-lock.json
+.claude/launch.json
+.claude/debug/

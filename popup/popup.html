@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptRyt</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup">
+    <div class="header">
+      <div class="logo">✦</div>
+      <div>
+        <div class="title">PromptRyt</div>
+        <div class="subtitle">AI Prompt Optimizer</div>
+      </div>
+      <div id="status-dot" class="status-dot active" title="Active"></div>
+    </div>
+
+    <div class="site-status" id="site-status">
+      <div class="site-info" id="site-info">
+        <span id="site-icon">🌐</span>
+        <span id="site-name">Not on a supported site</span>
+      </div>
+      <span id="site-badge" class="badge badge-inactive">Inactive</span>
+    </div>
+
+    <div class="mode-row">
+      <span class="mode-label">Mode</span>
+      <span id="mode-badge" class="badge badge-rule">Rule-based</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="actions">
+      <button id="toggle-btn" class="btn btn-toggle btn-enabled">
+        <span id="toggle-icon">⏸</span>
+        <span id="toggle-label">Disable on this site</span>
+      </button>
+      <button id="settings-btn" class="btn btn-settings">
+        ⚙ Settings
+      </button>
+    </div>
+
+    <div class="supported-sites">
+      <div class="supported-title">Supported sites</div>
+      <div class="site-pills">
+        <span class="pill">ChatGPT</span>
+        <span class="pill">Claude</span>
+        <span class="pill">Gemini</span>
+        <span class="pill">Copilot</span>
+        <span class="pill">DeepSeek</span>
+        <span class="pill">Manus</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

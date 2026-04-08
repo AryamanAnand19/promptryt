@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptRyt Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">✦</div>
+      <div class="header-text">
+        <h1>PromptRyt</h1>
+        <p>AI Prompt Optimizer Settings</p>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>AI Mode</h2>
+      <p class="desc">Use the Claude API for intelligent, context-aware prompt optimization. Without a key, PromptRyt uses smart rule-based optimization.</p>
+
+      <div class="field">
+        <label for="api-key">Anthropic API Key</label>
+        <div class="input-row">
+          <input type="password" id="api-key" placeholder="sk-ant-api03-..." autocomplete="off" />
+          <button id="save-key" class="btn btn-primary">Save</button>
+        </div>
+        <div id="key-status" class="key-status"></div>
+        <p class="hint">Your key is stored locally in your browser and never sent to any server other than Anthropic's API. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Get an API key →</a></p>
+      </div>
+
+      <div class="field">
+        <label>Optimization Mode</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="mode" value="ai" id="mode-ai" />
+            <div class="radio-content">
+              <strong>AI-Powered</strong>
+              <span>Uses Claude API — smarter, more contextual optimization (requires API key)</span>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="mode" value="rule-based" id="mode-rule" />
+            <div class="radio-content">
+              <strong>Rule-Based</strong>
+              <span>Works offline — fast, privacy-preserving, no API key needed</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Supported Sites</h2>
+      <p class="desc">Enable or disable PromptRyt on specific AI platforms.</p>
+      <div class="toggle-list">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">🤖</span>
+            <div>
+              <strong>ChatGPT</strong>
+              <small>chatgpt.com, chat.openai.com</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-chatgpt" data-site="chatgpt" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">✦</span>
+            <div>
+              <strong>Claude</strong>
+              <small>claude.ai</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-claude" data-site="claude" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">💎</span>
+            <div>
+              <strong>Gemini</strong>
+              <small>gemini.google.com</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-gemini" data-site="gemini" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">🪟</span>
+            <div>
+              <strong>Microsoft Copilot</strong>
+              <small>copilot.microsoft.com</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-copilot" data-site="copilot" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">🔵</span>
+            <div>
+              <strong>DeepSeek</strong>
+              <small>chat.deepseek.com</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-deepseek" data-site="deepseek" /><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="site-icon">🤝</span>
+            <div>
+              <strong>Manus</strong>
+              <small>manus.im</small>
+            </div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="site-manus" data-site="manus" /><span class="slider"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Privacy</h2>
+      <div class="privacy-box">
+        <p>🔒 <strong>What data is processed:</strong> Your prompt text, only when you click the PromptRyt button.</p>
+        <p>🔑 <strong>AI Mode:</strong> Prompts are sent to Anthropic's API using your personal API key. Anthropic's <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> applies.</p>
+        <p>🏠 <strong>Rule-Based Mode:</strong> All processing happens entirely in your browser. Nothing leaves your device.</p>
+        <p>📦 <strong>Storage:</strong> Only your settings and API key are stored locally in Chrome. No external servers.</p>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span>PromptRyt v1.0.0</span>
+      <a href="https://github.com/yourusername/promptryt" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

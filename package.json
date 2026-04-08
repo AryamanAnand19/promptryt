@@ -1,0 +1,14 @@
+{
+  "name": "prompt-ryt",
+  "version": "1.0.0",
+  "description": "AI Prompt Optimizer Chrome Extension",
+  "scripts": {
+    "icons": "node create-icons.js",
+    "dev": "npx serve . -p 3000 --no-clipboard",
+    "pack": "node -e \"const a=require('archiver'),fs=require('fs'),o=fs.createWriteStream('prompt-saathi.zip'),z=a('zip');z.pipe(o);z.glob('**/*',{cwd:'.',ignore:['node_modules/**','*.zip','package*.json','create-icons.js']});z.finalize();\""
+  },
+  "devDependencies": {
+    "archiver": "^6.0.2",
+    "serve": "^14.2.1"
+  }
+}
