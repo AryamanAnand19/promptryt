@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PromptRyt – AI Prompt Optimizer",
   "version": "1.0.0",
-  "description": "Floating prompt coach for AI chat sites. Get token-efficient, LLM-optimized prompts on ChatGPT, Claude, Gemini, Copilot, DeepSeek, and more.",
+  "description": "Floating prompt co-pilot for AI chat sites. Instantly generate Direct, Well-Rounded, and Technical prompt variants — no account needed.",
   "permissions": [
     "storage",
     "activeTab"
@@ -14,8 +14,7 @@
     "https://gemini.google.com/*",
     "https://copilot.microsoft.com/*",
     "https://chat.deepseek.com/*",
-    "https://manus.im/*",
-    "https://api.anthropic.com/*"
+    "https://manus.im/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js",

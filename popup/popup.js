@@ -1,5 +1,5 @@
 /**
- * popup.js — Toolbar popup logic
+ * popup.js — Toolbar popup: shows active site + enable/disable toggle
  */
 
 const SITE_META = {
@@ -8,10 +8,10 @@ const SITE_META = {
   gemini:   { icon: '💎', name: 'Gemini' },
   copilot:  { icon: '🪟', name: 'Copilot' },
   deepseek: { icon: '🔵', name: 'DeepSeek' },
-  manus:    { icon: '🤝', name: 'Manus' }
+  manus:    { icon: '🤝', name: 'Manus' },
 };
 
-function detectSiteFromUrl(url) {
+function detectSite(url) {
   if (!url) return null;
   if (url.includes('chatgpt.com') || url.includes('chat.openai.com')) return 'chatgpt';
   if (url.includes('claude.ai')) return 'claude';
@@ -23,50 +23,33 @@ function detectSiteFromUrl(url) {
 }
 
 async function init() {
-  // Get current tab
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const siteId = detectSiteFromUrl(tab?.url);
+  const siteId = detectSite(tab?.url);
   const meta = siteId ? SITE_META[siteId] : null;
 
-  // Site status
-  const siteIcon = document.getElementById('site-icon');
-  const siteName = document.getElementById('site-name');
+  // Site status row
+  document.getElementById('site-icon').textContent = meta ? meta.icon : '🌐';
+  document.getElementById('site-name').textContent = meta ? meta.name : 'Not supported';
+
   const siteBadge = document.getElementById('site-badge');
   const statusDot = document.getElementById('status-dot');
 
   if (meta) {
-    siteIcon.textContent = meta.icon;
-    siteName.textContent = meta.name;
     siteBadge.textContent = 'Active';
     siteBadge.className = 'badge badge-active';
     statusDot.className = 'status-dot active';
   } else {
-    siteIcon.textContent = '🌐';
-    siteName.textContent = 'Not supported';
     siteBadge.textContent = 'Inactive';
     siteBadge.className = 'badge badge-inactive';
     statusDot.className = 'status-dot inactive';
   }
 
-  // Mode badge
+  // Mode badge — always offline
   const modeBadge = document.getElementById('mode-badge');
-  const [prefs, swStatus] = await Promise.all([
-    new Promise(r => chrome.storage.sync.get('optimizationMode', r)),
-    new Promise(r => chrome.runtime.sendMessage({ type: 'GET_API_KEY_STATUS' }, r))
-  ]);
+  modeBadge.textContent = '100% Local';
+  modeBadge.className = 'badge badge-local';
 
-  const hasKey = swStatus?.hasKey;
-  const mode = prefs.optimizationMode || (hasKey ? 'ai' : 'rule-based');
-
-  if (mode === 'ai' && hasKey) {
-    modeBadge.textContent = 'AI-Powered';
-    modeBadge.className = 'badge badge-ai';
-  } else {
-    modeBadge.textContent = 'Rule-based';
-    modeBadge.className = 'badge badge-rule';
-  }
-
-  // Toggle button state
+  // Toggle button
   const toggleBtn = document.getElementById('toggle-btn');
   const toggleIcon = document.getElementById('toggle-icon');
   const toggleLabel = document.getElementById('toggle-label');
@@ -76,32 +59,29 @@ async function init() {
     toggleBtn.style.opacity = '0.4';
     toggleBtn.style.cursor = 'not-allowed';
   } else {
-    const sitePrefs = await new Promise(r => chrome.storage.sync.get(`enabled_${siteId}`, r));
-    const isEnabled = sitePrefs[`enabled_${siteId}`] !== false;
-
-    updateToggleBtn(isEnabled);
+    const prefs = await new Promise(r => chrome.storage.sync.get(`enabled_${siteId}`, r));
+    let enabled = prefs[`enabled_${siteId}`] !== false;
+    render(enabled);
 
     toggleBtn.addEventListener('click', async () => {
-      const current = await new Promise(r => chrome.storage.sync.get(`enabled_${siteId}`, r));
-      const wasEnabled = current[`enabled_${siteId}`] !== false;
-      await new Promise(r => chrome.storage.sync.set({ [`enabled_${siteId}`]: !wasEnabled }, r));
-      updateToggleBtn(!wasEnabled);
+      enabled = !enabled;
+      await new Promise(r => chrome.storage.sync.set({ [`enabled_${siteId}`]: enabled }, r));
+      render(enabled);
     });
   }
 
-  function updateToggleBtn(enabled) {
+  function render(enabled) {
     if (enabled) {
       toggleBtn.className = 'btn btn-toggle btn-enabled';
       toggleIcon.textContent = '⏸';
-      toggleLabel.textContent = 'Disable on this site';
+      toggleLabel.textContent = `Disable on this site`;
     } else {
       toggleBtn.className = 'btn btn-toggle btn-disabled';
       toggleIcon.textContent = '▶';
-      toggleLabel.textContent = 'Enable on this site';
+      toggleLabel.textContent = `Enable on this site`;
     }
   }
 
-  // Settings button
   document.getElementById('settings-btn').addEventListener('click', () => {
     chrome.runtime.openOptionsPage();
   });

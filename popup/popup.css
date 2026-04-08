@@ -64,6 +64,7 @@ body {
 .badge-inactive { background: #f1f5f9; color: #64748b; }
 .badge-ai { background: #ede9fe; color: #5b21b6; }
 .badge-rule { background: #e0f2fe; color: #0369a1; }
+.badge-local { background: #dcfce7; color: #15803d; }
 
 .mode-row {
   display: flex;

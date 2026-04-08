@@ -7,6 +7,51 @@
 
 window.PO = window.PO || {};
 
+// ─── Proper Noun Capitalizer ──────────────────────────────────────────────
+// Ensures known proper nouns, institutions, and acronyms are correctly cased
+
+const PROPER_NOUNS = {
+  // Universities & institutions
+  'kcl': 'KCL', 'king\'s college london': 'King\'s College London',
+  'edinburgh': 'Edinburgh', 'oxford': 'Oxford', 'cambridge': 'Cambridge',
+  'mit': 'MIT', 'stanford': 'Stanford', 'harvard': 'Harvard',
+  'iit': 'IIT', 'iim': 'IIM', 'nit': 'NIT', 'bits': 'BITS',
+  'lse': 'LSE', 'ucl': 'UCL', 'imperial': 'Imperial College London',
+  'yale': 'Yale', 'princeton': 'Princeton', 'columbia': 'Columbia',
+  // Companies & products
+  'google': 'Google', 'microsoft': 'Microsoft', 'apple': 'Apple',
+  'amazon': 'Amazon', 'meta': 'Meta', 'netflix': 'Netflix',
+  'openai': 'OpenAI', 'anthropic': 'Anthropic', 'deepmind': 'DeepMind',
+  'github': 'GitHub', 'linkedin': 'LinkedIn', 'twitter': 'Twitter',
+  'chatgpt': 'ChatGPT', 'claude': 'Claude', 'gemini': 'Gemini',
+  // Tech terms that should be cased
+  'javascript': 'JavaScript', 'typescript': 'TypeScript', 'nodejs': 'Node.js',
+  'python': 'Python', 'java': 'Java', 'golang': 'Go', 'rust': 'Rust',
+  'react': 'React', 'nextjs': 'Next.js', 'vuejs': 'Vue.js',
+  'ios': 'iOS', 'macos': 'macOS', 'linux': 'Linux', 'windows': 'Windows',
+  'sql': 'SQL', 'nosql': 'NoSQL', 'mongodb': 'MongoDB', 'postgres': 'PostgreSQL',
+  'aws': 'AWS', 'gcp': 'GCP', 'azure': 'Azure', 'docker': 'Docker',
+  // Business / Academic
+  'uk': 'UK', 'us': 'US', 'usa': 'USA', 'eu': 'EU', 'india': 'India',
+  'ai': 'AI', 'ml': 'ML', 'nlp': 'NLP', 'api': 'API', 'ui': 'UI', 'ux': 'UX',
+  'msc': 'MSc', 'bsc': 'BSc', 'mba': 'MBA', 'phd': 'PhD',
+  'roi': 'ROI', 'kpi': 'KPI', 'mvp': 'MVP', 'cto': 'CTO', 'ceo': 'CEO',
+  'saas': 'SaaS', 'b2b': 'B2B', 'b2c': 'B2C',
+  // People names patterns — capitalize each word after detection
+};
+
+function capitalizeProperNouns(text) {
+  let result = text;
+  for (const [lower, correct] of Object.entries(PROPER_NOUNS)) {
+    // Replace whole-word matches, case-insensitive, not inside longer words
+    const regex = new RegExp(`(?<![\\w])${lower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w])`, 'gi');
+    result = result.replace(regex, correct);
+  }
+  // Also capitalize words that look like names (Title Case following "to", "from", "at", etc.)
+  result = result.replace(/\b(to|from|at|in|of)\s+([A-Z][a-z]{2,})/g, (m, prep, name) => `${prep} ${name}`);
+  return result;
+}
+
 // ─── Abbreviation Expander ────────────────────────────────────────────────
 // Expands shorthand so the prompt is unambiguous to the LLM
 
@@ -338,8 +383,8 @@ function generateTechnical(core, expandedCore, intent, lang, siteId, expansions)
 window.PO.generateVariants = function (rawPrompt, siteId) {
   if (!rawPrompt || rawPrompt.trim().length < 4) return null;
 
-  // Step 1: Expand abbreviations
-  const expanded = expandAbbreviations(rawPrompt);
+  // Step 1: Expand abbreviations + fix proper noun casing
+  const expanded = capitalizeProperNouns(expandAbbreviations(rawPrompt));
 
   // Step 2: Detect intent and language
   const intent = detectIntent(expanded);
